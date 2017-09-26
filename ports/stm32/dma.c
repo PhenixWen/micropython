@@ -57,6 +57,8 @@ typedef struct _dma_descr_t {
     DMA_Stream_TypeDef *instance;
     #elif defined(MCU_SERIES_L4)
     DMA_Channel_TypeDef *instance;
+    // #elif defined(MCU_SERIES_F1)
+    // TODO STM32F1
     #else
     #error "Unsupported Processor"
     #endif

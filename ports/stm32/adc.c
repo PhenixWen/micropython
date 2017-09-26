@@ -79,6 +79,14 @@
 #define ADC_CAL1                ((uint16_t*)(ADC_CAL_ADDRESS - 2))
 #define ADC_CAL2                ((uint16_t*)(ADC_CAL_ADDRESS + 0x20))
 
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
+// #define ADC_FIRST_GPIO_CHANNEL  (0)
+// #define ADC_LAST_GPIO_CHANNEL   (15)
+// #define ADC_CAL_ADDRESS         (?)
+// #define ADC_CAL1                ((uint16_t*)(ADC_CAL_ADDRESS + 2))
+// #define ADC_CAL2                ((uint16_t*)(ADC_CAL_ADDRESS + 4))
+
 #else
 
 #error Unsupported processor
@@ -97,6 +105,11 @@
 #define VBAT_DIV (4)
 #elif defined(STM32L475xx) || defined(STM32L476xx)
 #define VBAT_DIV (3)
+// #elif defined(STM32F103xB) || defined(STM32F103xC) || \
+//       defined(STM32F103xD) || defined(STM32F103xE) || \
+//       defined(STM32F103xG)
+// TODO STM32F1
+
 #else
 #error Unsupported processor
 #endif
@@ -135,6 +148,8 @@ STATIC bool is_adcx_channel(int channel) {
     ADC_HandleTypeDef handle;
     handle.Instance = ADCx;
     return IS_ADC_CHANNEL(&handle, channel);
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
 #else
     #error Unsupported processor
 #endif
@@ -146,6 +161,8 @@ STATIC void adc_wait_for_eoc_or_timeout(int32_t timeout) {
     while ((ADCx->SR & ADC_FLAG_EOC) != ADC_FLAG_EOC) {
 #elif defined(MCU_SERIES_L4)
     while (READ_BIT(ADCx->ISR, ADC_FLAG_EOC) != ADC_FLAG_EOC) {
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
 #else
     #error Unsupported processor
 #endif
@@ -160,6 +177,8 @@ STATIC void adcx_clock_enable(void) {
     ADCx_CLK_ENABLE();
 #elif defined(MCU_SERIES_L4)
     __HAL_RCC_ADC_CLK_ENABLE();
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
 #else
     #error Unsupported processor
 #endif
@@ -181,6 +200,8 @@ STATIC void adc_init_single(pyb_obj_adc_t *adc_obj) {
       GPIO_InitStructure.Mode = GPIO_MODE_ANALOG;
 #elif defined(MCU_SERIES_L4)
       GPIO_InitStructure.Mode = GPIO_MODE_ANALOG_ADC_CONTROL;
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
 #else
     #error Unsupported processor
 #endif
@@ -214,6 +235,8 @@ STATIC void adc_init_single(pyb_obj_adc_t *adc_obj) {
     adcHandle->Init.LowPowerAutoWait      = DISABLE;
     adcHandle->Init.Overrun               = ADC_OVR_DATA_PRESERVED;
     adcHandle->Init.OversamplingMode      = DISABLE;
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
 #else
     #error Unsupported processor
 #endif
@@ -241,6 +264,8 @@ STATIC void adc_config_channel(ADC_HandleTypeDef *adc_handle, uint32_t channel) 
     sConfig.SamplingTime = ADC_SAMPLETIME_12CYCLES_5;
     sConfig.SingleDiff = ADC_SINGLE_ENDED;
     sConfig.OffsetNumber = ADC_OFFSET_NONE;
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
 #else
     #error Unsupported processor
 #endif
@@ -406,6 +431,8 @@ STATIC mp_obj_t adc_read_timed(mp_obj_t self_in, mp_obj_t buf_in, mp_obj_t freq_
             ADCx->CR2 |= (uint32_t)ADC_CR2_SWSTART;
 #elif defined(MCU_SERIES_L4)
             SET_BIT(ADCx->CR, ADC_CR_ADSTART);
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
 #else
             #error Unsupported processor
 #endif
@@ -515,6 +542,8 @@ void adc_init_all(pyb_adc_all_obj_t *adc_all, uint32_t resolution, uint32_t en_m
     adcHandle->Init.LowPowerAutoWait      = DISABLE;
     adcHandle->Init.Overrun               = ADC_OVR_DATA_PRESERVED;
     adcHandle->Init.OversamplingMode      = DISABLE;
+// #elif defined(MCU_SERIES_F1)
+// TODO STM32F1
 #else
     #error Unsupported processor
 #endif

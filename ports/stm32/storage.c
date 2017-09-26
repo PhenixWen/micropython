@@ -103,6 +103,9 @@ extern uint8_t _flash_fs_end;
 #define FLASH_MEM_SEG1_START_ADDR ((long)&_flash_fs_start)
 #define FLASH_MEM_SEG1_NUM_BLOCKS ((&_flash_fs_end - &_flash_fs_start) / 512)
 
+// #elif defined(STM32F103xB)
+// TODO STM32F1
+
 #else
 #error "no storage support for this MCU"
 #endif
